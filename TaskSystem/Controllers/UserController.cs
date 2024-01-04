@@ -29,17 +29,25 @@ namespace TaskSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserModel>> Add([FromBody] UserModel user)
+        public async Task<ActionResult<UserModel>> Add([FromBody] UserModel userModel)
         {
-            UserModel add = await _userRepository.Add(user);
+            UserModel add = await _userRepository.Add(userModel);
             return Ok(add);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel user, int id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, int id)
         {
-            UserModel update = await _userRepository.Update(user, id);
+            userModel.Id = id;
+            UserModel update = await _userRepository.Update(userModel, id);
             return Ok(update);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<UserModel>> Delete(int id)
+        {
+            bool delete = await _userRepository.Delete(id);
+            return Ok(delete);
         }
     }
 }
